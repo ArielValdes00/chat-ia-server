@@ -1,26 +1,45 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
+import { Chat } from './entities/chat.entity';
+import { Message } from 'src/message/entities/message.entity';
 
 @Injectable()
 export class ChatService {
-  create(createChatDto: CreateChatDto) {
-    return 'This action adds a new chat';
-  }
+    async create(userId: number): Promise<Chat> {
+        const chat = await Chat.create({
+            userId: userId,
+        });
+        return chat;
+    }
 
-  findAll() {
-    return `This action returns all chat`;
-  }
+    async findAll(): Promise<Chat[]> {
+        return await Chat.findAll({
+            include: [{
+                model: Message,
+                as: 'messages',
+            }],
+        });
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} chat`;
-  }
+    async findAllByUserId(userId: number): Promise<Chat[]> {
+        return await Chat.findAll({
+            where: { userId: userId },
+            include: [Message]
+        });
+    }
 
-  update(id: number, updateChatDto: UpdateChatDto) {
-    return `This action updates a #${id} chat`;
-  }
+    update(id: number, updateChatDto: UpdateChatDto) {
+        return `This action updates a #${id} chat`;
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} chat`;
-  }
+    async remove(id: number): Promise<void> {
+        const chat = await Chat.findByPk(id);
+        if (!chat) {
+            throw new NotFoundException(`Chat with ID ${id} not found`);
+        }
+        await Chat.destroy({
+            where: { id: id },
+        });
+    }
 }

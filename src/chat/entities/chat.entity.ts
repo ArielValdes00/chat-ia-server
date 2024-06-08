@@ -1,4 +1,5 @@
-import { Column, DataType, Model, Table, Default, BelongsTo, ForeignKey } from 'sequelize-typescript';
+import { Column, DataType, Model, Table, Default, BelongsTo, ForeignKey, HasMany } from 'sequelize-typescript';
+import { Message } from 'src/message/entities/message.entity';
 import { User } from 'src/user/entities/user.entity';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -8,12 +9,12 @@ export class Chat extends Model {
   @Column({ type: DataType.UUID, unique: true })
   uuid: string;
 
-  @Column({ type: DataType.INTEGER })
-  userId: number;
-
   @ForeignKey(() => User)
   @Column
-  addressId: number;
+  userId: number;
+
+  @HasMany(() => Message)
+  messages: Message[];
 
   @BelongsTo(() => User)
   user: User;

@@ -8,18 +8,15 @@ export class Message extends Model {
   @Column({ type: DataType.UUID, unique: true })
   uuid: string;
 
-  @Column({ type: DataType.INTEGER })
-  chatId: number;
-
   @Column({ type: DataType.TEXT, allowNull: false })
   content: string;
 
-  @Column({ type: DataType.INTEGER })
-  senderId: number;
+  @Column({ type: DataType.STRING })
+  sender: 'user' | 'ai';
 
   @ForeignKey(() => Chat)
-  @Column
-  addressId: number;
+  @Column({ type: DataType.INTEGER })
+  chatId: number;
 
   @BelongsTo(() => Chat) 
   chat: Chat;

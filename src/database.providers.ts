@@ -4,7 +4,7 @@ import { User } from './user/entities/user.entity';
 import { Chat } from './chat/entities/chat.entity';
 import { Message } from './message/entities/message.entity';
 
-dotenv.config(); 
+dotenv.config();
 export const databaseProviders = [
     {
         provide: 'SEQUELIZE',

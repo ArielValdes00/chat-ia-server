@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Req, Res } from '@nestjs/common';
+import { Controller, Get, UseGuards, Req, Res, Post } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
@@ -20,7 +20,13 @@ export class AuthController {
     async googleLoginCallback(@Req() req, @Res() res) {
         const user = await this.userService.findOrCreateGoogleUser(req.user);
         const jwt = await this.userService.generateJwt(user);
+        res.cookie('jwt', jwt, {
+            httpOnly: false,
+            secure: false,
+            maxAge: 3600000,
+        });
 
-        res.json({ token: jwt });
+        const frontendUrl = 'http://localhost:3000';
+        res.redirect(frontendUrl);
     }
 }
