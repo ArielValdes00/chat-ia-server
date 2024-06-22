@@ -8,8 +8,8 @@ export class Message extends Model {
   @Column({ type: DataType.UUID, unique: true })
   uuid: string;
 
-  @Column({ type: DataType.TEXT, allowNull: false })
-  content: string;
+  @Column({ type: DataType.JSONB, allowNull: false })
+  content: any;
 
   @Column({ type: DataType.STRING })
   sender: 'user' | 'ai';
