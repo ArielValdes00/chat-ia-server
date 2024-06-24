@@ -24,7 +24,7 @@ export class AuthController {
             maxAge: 3600000,
         });
 
-        const frontendUrl = 'http://localhost:3000';
+        const frontendUrl = process.env.FRONTEND_URL;
         res.redirect(frontendUrl);
     }
 }

@@ -1,13 +1,15 @@
 import { v2 as cloudinary } from 'cloudinary';
+import * as dotenv from 'dotenv';
 
+dotenv.config();
 export const CloudinaryProvider = {
   provide: 'CLOUDINARY',
   useFactory: () => {
     return cloudinary.config({
-        cloud_name: "dnczjmsbt",
-        api_key: "188544876641381",
+        cloud_name: process.env.CLOUDINARY_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
         api_secret:
-          "n-9Jjtrp93wiXEsY_EdPrWCWiBE",
+          process.env.CLOUDINARY_API_SECRET,
     });
   },
 };
