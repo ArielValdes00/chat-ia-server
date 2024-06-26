@@ -19,7 +19,7 @@ export class AuthController {
         const user = await this.userService.findOrCreateGoogleUser(req.user);
         const jwt = await this.userService.generateJwt(user);
         res.cookie('jwt', jwt, {
-            httpOnly: true,
+            httpOnly: false,
             secure: true,
             maxAge: 3600000,
         });
