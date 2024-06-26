@@ -23,11 +23,14 @@ export class ChatService {
     }
 
     async findAllByUserId(userId: number): Promise<Chat[]> {
+        if (!userId || isNaN(userId)) {
+            throw new NotFoundException('Invalid user ID');
+        }
         return await Chat.findAll({
             where: { userId: userId },
             include: [Message]
         });
-    }
+    }    
 
     update(id: number, updateChatDto: UpdateChatDto) {
         return `This action updates a #${id} chat`;
