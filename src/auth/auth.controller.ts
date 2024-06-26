@@ -22,6 +22,7 @@ export class AuthController {
             httpOnly: false,
             secure: true,
             maxAge: 3600000,
+            domain: process.env.FRONTEND_URL
         });
 
         const frontendUrl = process.env.FRONTEND_URL;
