@@ -1,5 +1,6 @@
-import { Controller, Get, UseGuards, Req, Res } from '@nestjs/common';
+import { Controller, Get, UseGuards, Req, Res, HttpStatus } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { UserService } from 'src/user/user.service';
 
 @Controller('auth')
@@ -19,13 +20,21 @@ export class AuthController {
         const user = await this.userService.findOrCreateGoogleUser(req.user);
         const jwt = await this.userService.generateJwt(user);
         res.cookie('jwt', jwt, {
-            httpOnly: false,
+            httpOnly: true,
             secure: true,
             maxAge: 3600000,
-            sameSite: 'none',
         });
 
         const frontendUrl = process.env.FRONTEND_URL;
         res.redirect(frontendUrl);
+    }
+    @Get('verify')
+    @UseGuards(JwtAuthGuard)
+    verifySession(@Req() req, @Res() res) {
+        if (req.user) {
+            return res.status(HttpStatus.OK).json({ session: true, user: req.user });
+        } else {
+            return res.status(HttpStatus.UNAUTHORIZED).json({ session: false });
+        }
     }
 }

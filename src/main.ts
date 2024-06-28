@@ -1,11 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import * as dotenv from 'dotenv';
+import * as cookieParser from 'cookie-parser';
 
+dotenv.config();
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create(AppModule);
 
-  app.enableCors()
+    app.use(cookieParser());
 
-  await app.listen(4000);
+    const frontendUrl = process.env.FRONTEND_URL;
+
+    app.enableCors({
+        origin: [frontendUrl], 
+        credentials: true,
+    });
+    await app.listen(4000);
 }
 bootstrap();
