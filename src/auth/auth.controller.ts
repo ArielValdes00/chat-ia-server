@@ -37,4 +37,16 @@ export class AuthController {
             return res.status(HttpStatus.UNAUTHORIZED).json({ session: false });
         }
     }
+
+    @Get('logout')
+    async logout(@Res() res) {
+        try {
+            res.clearCookie('jwt');
+            return res.status(HttpStatus.OK).json({ success: true });
+        } catch (error) {
+            console.error('Error during logout:', error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ success: false });
+        }
+    }
+
 }
