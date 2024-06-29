@@ -33,7 +33,7 @@ export class AuthController {
     @UseGuards(JwtAuthGuard)
     verifySession(@Req() req, @Res() res) {
         if (req.user) {
-            return res.status(HttpStatus.OK).json({ session: true, user: req.user });
+            return res.status(HttpStatus.OK).json({ session: true, user: req.user.sub });
         } else {
             return res.status(HttpStatus.UNAUTHORIZED).json({ session: false });
         }
